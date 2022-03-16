@@ -1,10 +1,11 @@
-
+import Square from "./Square";
 
 function App() {
   return (
-      <h1>
-          Hello World
-      </h1>
+    <div className="App">
+      <h1>Hello There</h1> 
+      <Square/>
+    </div>
   );
 }
 
