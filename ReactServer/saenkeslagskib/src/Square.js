@@ -1,8 +1,8 @@
-function Square(){
+function Square(props){
     return (
         <button className="square">
         <span>
-            Hej kammerat
+                {props.value}
         </span>
         </button>
     );
