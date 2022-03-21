@@ -1,10 +1,12 @@
 import Square from "./Square";
 import Board from "./board";
+
  
 function App() {
   return (
     <div className="App">
       <h1>Hello There</h1> 
+        <Board/>
         <Board/>
 
     </div>
