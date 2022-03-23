@@ -6,9 +6,4 @@ class Boat {
         this.length = length;
         this.orientation = orientation;
     }
-
-    BuildBoard() {
-        
-    }
-
 }
