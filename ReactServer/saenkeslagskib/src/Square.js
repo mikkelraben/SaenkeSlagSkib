@@ -7,7 +7,7 @@ function Square(props){
         backgroundColor: color,
     }
 
-    
+
 
     return (
         <button className="square" style={btnStyle}>
@@ -17,3 +17,4 @@ function Square(props){
 }
 
 export default Square;
+

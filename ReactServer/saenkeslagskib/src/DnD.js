@@ -26,16 +26,7 @@ return (
     >
 
     </div>
-
+    
 
 )
     }
-
-import var i
-
-export default function BoardSquare ({x,y,children}) {
-    const 
-
-
-
-}
