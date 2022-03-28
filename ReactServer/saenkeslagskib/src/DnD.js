@@ -1,32 +1,43 @@
+//Make it possible to drag an item.
+
 import React from 'react'
 import { ItemTypes } from './Constants'
 import { useDrag } from 'react-dnd'
 import Square from './Square'
 
 
-function Boat(){ //Definere hvilken opjekt vi er i gang med at bevæge.
-const [{ isDragging }, drag] = useDrag(()=>  ({
+const Boat = ({ boat, size, onClick }) => {
+    const [{ isDragging }, drag] = useDrag({
+        item: {
+            type: ItemTypes.BOAT,
+            id: boat.id,
+            position: boat.position
+        },
+        collect: monitor => ({
+            isDragging: !!monitor.isDragging(),
+        }),
+    })
 
-    type : ItemTypes.Boat,
-    collect: moniter => ({    
-        isDragging: !!moniter.isDragging(),
-    }),
-}))
-
-return (
-    <div  
-        ref={drag}
-        style={{
-            //opacity: isDragging ? 0.5 : 1, // Hvis vi vil have at båden bliver gennemsigtigt mens den bliver rykket på.
-            fontSize: 10,
-            fontWeight: 'bold',
-            cursor: 'move',
-
-        }} 
-    >
-
-    </div>
-    
-
-)
+    const style = {
+        opacity: isDragging ? 0.5 : 1,
+        cursor: 'move',
     }
+
+    return (
+        <div ref={drag} style={style}>
+            <div className="boat" onClick={onClick}>
+                {boat.position.map((position, i) => (
+                    <Square
+                        key={i}
+                        value={boat.id}
+                        x={position.x}
+                        y={position.y}
+                    />
+                ))}
+            </div>
+        </div>
+    )
+}
+
+
+export default Boat
