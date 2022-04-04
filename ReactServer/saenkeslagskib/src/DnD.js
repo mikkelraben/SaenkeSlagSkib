@@ -1,41 +1,43 @@
+
+
 import React from 'react'
 import { ItemTypes } from './Constants'
 import { useDrag } from 'react-dnd'
 import Square from './Square'
 
 
-function Boat(){ //Definere hvilken opjekt vi er i gang med at bevæge.
-const [{ isDragging }, drag] = useDrag(()=>  ({
+const Boat = ({ boat, size, onClick }) => { //Drag and drop
+    const [{ isDragging }, drag] = useDrag({
+        item: {
+            type: ItemTypes.BOAT,
+            id: boat.id,
+            position: boat.position
+        },
+        collect: monitor => ({
+            isDragging: !!monitor.isDragging(),
+        }),
+    })
 
-    type : ItemTypes.Boat,
-    collect: moniter => ({    
-        isDragging: !!moniter.isDragging(),
-    }),
-}))
-
-return (
-    <div  
-        ref={drag}
-        style={{
-            //opacity: isDragging ? 0.5 : 1, // Hvis vi vil have at båden bliver gennemsigtigt mens den bliver rykket på.
-            fontSize: 10,
-            fontWeight: 'bold',
-            cursor: 'move',
-
-        }} 
-    >
-
-    </div>
-
-
-)
+    const style = { //Denne kode kan laves til en 1 linje.
+        opacity: isDragging ? 0.5 : 1,
+        cursor: 'move',
     }
 
-import var i
-
-export default function BoardSquare ({x,y,children}) {
-    const 
-
-
-
+    return (
+        <div ref={drag} style={style}>
+            <div className="boat" onClick={onClick}>
+                {boat.position.map((position, i) => (
+                    <Square //Position is an array of objects with x and y coordinates.
+                        key={i}
+                        value={boat.id}
+                        x={position.x}
+                        y={position.y}
+                    />
+                ))}
+            </div>
+        </div>
+    )
 }
+
+
+export default Boat

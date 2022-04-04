@@ -1,10 +1,11 @@
 import Board from "./board";
-import io from "socket.io-client";
+import {io} from "socket.io-client";
+import Boat from "./boat";
  
 function App() {
-  const socket = io("http://localhost:3001");
+  const socket = io("http://localhost:3000");
   socket.on("connect", () => {
-    console.log(socket.id);
+    console.log(socket.id); //Prints the socket id.
   });
 
   return (
