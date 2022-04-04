@@ -1,4 +1,4 @@
-
+//Defenition of what a boat is, andt it's parameters.
 
 class Boat {
     constructor(x,y,length,orientation){
@@ -45,8 +45,46 @@ class Boat {
             y: this.GetRandomNumber(0, this.size - 1)
         };
 
+        let curentPoint;
+
         for (let i = 0; i < this.boats.length; i++) {
+            
+            let nextPoint =
+               
+                direction[this.boats[i].orientation]
+                    (startPoint.x, startPoint.y, this.boats[i].length);
+
+            if (this.IsValidPoint(nextPoint)) {
+                curentPoint = nextPoint;
+                startPoint = nextPoint;
+                BoatCoordinates.push(curentPoint);
+            } else {
+                i--;
+            }
+
+            if(!this.IsValidPoint(boardCopy,nextPoint)){
+                this.invalidAttempts += 1;
+                this.BuildBoats(Boat);
+                return;
+            }
+            curentPoint = nextPoint;
+            BoatCoordinates.push(curentPoint);
+            this.SetBoat(this.boats[i], boardCopy, curentPoint);
+
+            if (this.boats[i].orientation === 0) {
+                direction = this.GetDirections();
+            }
+
+            if (this.boats[i].orientation === 1) {
+                direction = this.GetDirections();
+            }
+
 
         }
-    }    
-}
+
+    }
+
+    
+
+       
+} export default Boat;
