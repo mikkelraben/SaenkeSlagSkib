@@ -5,6 +5,9 @@ const io = new Server({cors: {
 }});
 
 io.on("connection", (socket) => {
+    socket.on("Init", (data) => {
+        console.log(data);
+    });
     console.log("a user connected");
 });
 
