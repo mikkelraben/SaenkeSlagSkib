@@ -1,6 +1,6 @@
 import Board from "./board";
 import {io} from "socket.io-client";
-import Boat from "./boat";
+import Boat from "./Boat";
  
 function App() {
   const socket = io("http://localhost:3000");
@@ -12,8 +12,6 @@ function App() {
     <div className="App">
       <h1>BattleShip Game 0.1</h1> 
         <Board/>
-        
-
     </div>
   );
 }
