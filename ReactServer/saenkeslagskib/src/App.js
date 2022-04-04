@@ -1,5 +1,6 @@
 import Board from "./board";
 import {io} from "socket.io-client";
+import Boat from "./boat";
  
 function App() {
   const socket = io("http://localhost:3000");

@@ -1,4 +1,4 @@
-//Make it possible to drag an item.
+
 
 import React from 'react'
 import { ItemTypes } from './Constants'
