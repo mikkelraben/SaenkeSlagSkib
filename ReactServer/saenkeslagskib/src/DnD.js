@@ -13,7 +13,7 @@ const Boat = ({ boat, size, onClick }) => { //Drag and drop
             id: boat.id,
             position: boat.position
         },
-        collect: monitor => ({
+        collect: monitor => ({ //Collects the drag and drop information.
             isDragging: !!monitor.isDragging(),
         }),
     })
@@ -23,7 +23,7 @@ const Boat = ({ boat, size, onClick }) => { //Drag and drop
         cursor: 'move',
     }
 
-    return (
+    return ( 
         <div ref={drag} style={style}>
             <div className="boat" onClick={onClick}>
                 {boat.position.map((position, i) => (
@@ -37,6 +37,8 @@ const Boat = ({ boat, size, onClick }) => { //Drag and drop
             </div>
         </div>
     )
+
+    
 }
 
 

@@ -1,6 +1,25 @@
 
 import Square from "./Square";
 import "./row.css";
+import Boat from "./Boat";
+import React from "react";
+
+function renderSquare(i, [BoatX, BoatY]){
+    const x = i % 8
+    const y = Math.floor(i / 8)
+    const isBoatHere = x === BoatX && y === BoatY
+    const square = isBoatHere ? <Square value={i} /> : <Square value={-1} />
+    const piece = isBoatHere ? <Boat/> : null
+
+    return (
+        <div key={i} style={{ width: "12.5%" , height: '12.5%'}}>
+            {square}
+            {piece}
+        </div>
+    )
+
+}
+
 
 function Board() {
 
@@ -38,7 +57,8 @@ function Board() {
 
     const squares = [];
     for (let i = 0; i < (size*size); i++) {
-        squares.push(-1);
+        squares.push(renderSquare(-1, [-1, -1]));
+
     }
 
     for (let i = 0; i < boats.length; i++) {
@@ -68,6 +88,7 @@ function Board() {
                 );
             }
         }
+
         rows.push(<div key={i} className="board-row">{row}</div>);
     }
 
@@ -76,6 +97,8 @@ function Board() {
             {rows}
         </div>
     );
+
+    
 
 
 } export default Board;

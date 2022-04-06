@@ -1,4 +1,4 @@
-//Defenition of what a boat is, andt it's parameters.
+
 
 class Boat {  
     constructor(x,y,length,orientation){ //Constructor for the boat.
