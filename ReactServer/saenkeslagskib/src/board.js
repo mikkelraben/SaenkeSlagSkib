@@ -80,7 +80,7 @@ export default function Board(props){
                     })}
                 </div>
                 {!props.isRecieving&&
-                    <div>
+                    <div style={{position: "relative", top: 10, left:"25%"}}>
                         <button onClick={() => {setBoats([]);setIsDonePlacing(false)}}>Reset</button>
                         <button onClick={() => setIsDonePlacing(true)}>Done Placing</button>
                     </div>
