@@ -5,7 +5,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { Boat} from './Boat';
 import { BoardSize } from "./Constants";
 
-export default function Board(){
+export default function Board(props){
     //states for board
     const [boats, setBoats] = useState([]);
     const [squares, setState] = useState(Array(BoardSize*BoardSize).fill(0));
@@ -71,17 +71,22 @@ export default function Board(){
     }
 
     return (
-        <div>
+        <div style={{display: "inline-grid"}}>
             <DndProvider backend={HTML5Backend}>
                 <div className="board" style={ boardStyle }>
                     {squares.map((square, index) => {
-                        return <Square key={index} index={index} handleBoatMove={handleBoatMove} isDonePlacing={isDonePlacing} state={squares} children={
+                        return <Square key={index} index={index} handleBoatMove={handleBoatMove} BoardPlacable={isDonePlacing||props.isRecieving} state={squares} children={
                             isBoatOnSquare(index) !== -1 ? <Boat index={isBoatOnSquare(index)} length={boats[isBoatOnSquare(index)].length} direction={boats[isBoatOnSquare(index)].direction}/> : null }/>
                     })}
                 </div>
-                <button onClick={() => {setBoats([]);setIsDonePlacing(false)}}>Reset</button>
-                <button onClick={() => setIsDonePlacing(true)}>Done Placing</button>
-                {!isDonePlacing&&
+                {!props.isRecieving&&
+                    <div>
+                        <button onClick={() => {setBoats([]);setIsDonePlacing(false)}}>Reset</button>
+                        <button onClick={() => setIsDonePlacing(true)}>Done Placing</button>
+                    </div>
+                }
+                
+                {!isDonePlacing&&!props.isRecieving&&
                 <div style={{position: "relative", top: 30}}>
                     <Boat index={-1} length={2} left={50} direction={false}/>
                     <Boat index={-1} length={3} left={90} direction={false}/>
@@ -93,10 +98,6 @@ export default function Board(){
 
 
             </DndProvider>
-            <p>
-                Hello There
-            </p>
-
         </div>
 
     );

@@ -43,7 +43,7 @@ export default function Square(props){
             props.handleBoatMove(item.index, x, y, item.direction, item.length);
         },
         canDrop: (item) => {
-            return CanDropOnSquare(item, props.index, props.state, props.isDonePlacing);
+            return CanDropOnSquare(item, props.index, props.state, props.BoardPlacable);
         },
         isOver: (monitor) => {
             return monitor.isOver();
