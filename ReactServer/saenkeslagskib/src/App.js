@@ -1,6 +1,5 @@
 import Board from "./board";
 import {io} from "socket.io-client";
-import Ship from "./Ship";
 import React from "react";
 
  
@@ -13,7 +12,7 @@ function App() {
   return (
     <div className="App">
       <h1>BattleShip Game 0.1</h1> 
-        <Board/>
+      <Board/>
     </div>
   );
 }
