@@ -13,6 +13,8 @@ function App() {
     <div className="App">
       <h1>BattleShip Game 0.1</h1> 
       <Board/>
+      
+      
     </div>
   );
 }
