@@ -1,104 +1,103 @@
-
 import Square from "./Square";
-import "./row.css";
-import Boat from "./Boat";
-import React from "react";
+import { useEffect, useState } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { Boat} from './Boat';
+import { BoardSize } from "./Constants";
 
-function renderSquare(i, [BoatX, BoatY]){
-    const x = i % 8
-    const y = Math.floor(i / 8)
-    const isBoatHere = x === BoatX && y === BoatY
-    const square = isBoatHere ? <Square value={i} /> : <Square value={-1} />
-    const piece = isBoatHere ? <Boat/> : null
+export default function Board(){
+    //states for board
+    const [boats, setBoats] = useState([]);
+    const [squares, setState] = useState(Array(BoardSize*BoardSize).fill(0));
+    const [isDonePlacing, setIsDonePlacing] = useState(false);
 
-    return (
-        <div key={i} style={{ width: "12.5%" , height: '12.5%'}}>
-            {square}
-            {piece}
-        </div>
-    )
-
-}
-
-
-function Board() {
-
-    const size = 10;
-        
-    const rows = [];
-
-    const boats = [
-        {
-            id: 0,
-            position: [
-                {
-                    x: 8,
-                    y: 2
-                },
-                {
-                    x: 8,
-                    y: 3
-                }
-            ]
-        },
-        {
-            id: 1,
-            position: [
-                {
-                    x: 6,
-                    y: 2
-                },
-                {
-                    x: 6,
-                    y: 3
-                }
-            ]
-        }];
-
-    const squares = [];
-    for (let i = 0; i < (size*size); i++) {
-        squares.push(renderSquare(-1, [-1, -1]));
-
+    //styling for the board
+    const boardStyle = {
+        width: 32*BoardSize+"px",
+        height: 32*BoardSize+"px",
+        display: "grid",
+        gridTemplateColumns: "repeat("+BoardSize+", 1fr)",
+        gridTemplateRows: "repeat("+BoardSize+", 1fr)",
+        gridGap: "0px",
+        gridAutoRows: "1fr",
+        gridAutoColumns: "1fr"
     }
 
-    for (let i = 0; i < boats.length; i++) {
-        const boat = boats[i];
-        for (let j = 0; j < boat.position.length; j++) {
-            const position = boat.position[j];
-            squares[position.x + position.y * size] = boat.id;
-        }
-    }
-
-    for (let i = 0; i < size; i++) {
-        const row = [];
-        for (let j = 0; j < size; j++) {
-            if (squares[j + i * size] !== -1) {
-                row.push(
-                    <Square
-                        key={j + i * size}
-                        value={squares[j + i * size]}
-                    />
-                );
-            } else {
-                row.push(
-                    <Square
-                        key={j + i * size}
-                        value={-1}
-                    />
-                );
+    // when boats updates update state
+    useEffect(() => {
+        const squares = Array(BoardSize*BoardSize).fill(0);
+        console.log(boats);
+        for(let i = 0; i < boats.length; i++){
+            const boat = boats[i];
+            for(let j = 0; j < boat.length; j++){
+                const x = boat.x + (boat.direction ? j : 0);
+                const y = boat.y + (boat.direction ? 0 : j);
+                squares[x+y*BoardSize] = i+1;
             }
         }
+        //console.log(squares);
+        setState(squares);
+    }, [boats]);
 
-        rows.push(<div key={i} className="board-row">{row}</div>);
+    // move or create a boat
+    const handleBoatMove = (index, x, y,direction, length) => {
+        //if the index is -1 then the boat is new
+        if(index === -1){
+            //copy the boats array
+            const newBoats = [...boats];
+            //add the new boat
+            newBoats.push({x, y, direction, length});
+            //update the state
+            setBoats(newBoats);
+        }else{
+            //copy the boats array
+            const newBoats = [...boats];
+            //update the boats position
+            newBoats[index].x = x;
+            newBoats[index].y = y;
+            //update the state
+            setBoats(newBoats);
+        }
+    }
+
+    function isBoatOnSquare(index){
+        //check if boat is on square and return index
+        for(let i = 0; i < boats.length; i++){
+            if((boats[i].x === (index % BoardSize)) && (boats[i].y === (Math.floor(index / BoardSize)))){
+                return i;
+            }
+        }
+        return -1;
     }
 
     return (
-        <div className="board">
-            {rows}
+        <div>
+            <DndProvider backend={HTML5Backend}>
+                <div className="board" style={ boardStyle }>
+                    {squares.map((square, index) => {
+                        return <Square key={index} index={index} handleBoatMove={handleBoatMove} isDonePlacing={isDonePlacing} state={squares} children={
+                            isBoatOnSquare(index) !== -1 ? <Boat index={isBoatOnSquare(index)} length={boats[isBoatOnSquare(index)].length} direction={boats[isBoatOnSquare(index)].direction}/> : null }/>
+                    })}
+                </div>
+                <button onClick={() => {setBoats([]);setIsDonePlacing(false)}}>Reset</button>
+                <button onClick={() => setIsDonePlacing(true)}>Done Placing</button>
+                {!isDonePlacing&&
+                <div style={{position: "relative", top: 30}}>
+                    <Boat index={-1} length={2} left={50} direction={false}/>
+                    <Boat index={-1} length={3} left={90} direction={false}/>
+                    <Boat index={-1} length={4} left={130} direction={false}/>
+                    <Boat index={-1} length={2} left={10} top={80} direction={true}/>
+                    <Boat index={-1} length={3} left={10} top={120} direction={true}/>
+                    <Boat index={-1} length={4} left={10} top={160} direction={true}/>
+                </div>}
+
+
+            </DndProvider>
+            <p>
+                Hello There
+            </p>
+
         </div>
+
     );
-
-    
-
-
-} export default Board;
+}
