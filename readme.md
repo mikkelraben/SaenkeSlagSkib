@@ -1,8 +1,25 @@
 # Read Me
 
-### Installation
+## Installation
 
-To install this project you must first.
+To install this project you must first start the react server which serves the client side
 
-`cd ReactServer`
-`cd saenkeslagskib`
+```shell
+cd ReactServer 
+```
+
+```shell
+cd saenkeslagskib 
+```
+
+```shell
+npm install
+```
+
+```shell
+npm start
+```
+
+After starting the client server the backend must be started
+
+#TODO
