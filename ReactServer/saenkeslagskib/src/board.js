@@ -42,7 +42,7 @@ export default function Board(props) {
         //if the index is -1 then the boat is new
         if(index === -1){
             //copy the boats array
-            console.log(props.boats)
+            //console.log(props.boats)
             const newBoats = [...props.boats];
             //add the new boat
             newBoats.push({x, y, direction, length});

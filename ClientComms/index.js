@@ -5,7 +5,7 @@ const io = new Server({cors: {
 }});
 
 io.on("connection", (socket) => {
-    socket.on("Init", (data) => {
+    socket.on("Init", data => {
         //parse data from json to list of boats
         try {
             const boats = JSON.parse(data);
@@ -14,16 +14,18 @@ io.on("connection", (socket) => {
                 squares.push(-1); 
             }
             console.log(boats);
-            socket.broadcast.emit("Init", {boats: boats});
+            socket.broadcast.emit("Init", boats);
         } catch (error) {
-            console.log(error);
-            socket.
+            console.err(error);
+            console.log(data);
+            socket.broadcast.emit("Init", {boats: []});
         }
         //create list of squares
-
+        console.log("Data");
         console.log(data);
+        console.log("Data parsed");
     });
-    console.log("a user connected");
+    //console.log("a user connected");
 });
 
 io.listen(3001);
