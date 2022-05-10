@@ -12,6 +12,7 @@ cd ReactServer
 cd saenkeslagskib 
 ```
 
+Denne kommando skal kun køres første gang ved installation
 ```shell
 npm install
 ```
@@ -24,6 +25,11 @@ After starting the client server the backend must be started
 
 ```shell
 cd ClientComms
+```
+
+Denne kommando skal kun køres første gang ved installation
+```shell
+npm install
 ```
 
 ```
