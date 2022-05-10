@@ -22,8 +22,8 @@ export default function Board(props) {
     }
 
     // when boats updates update state
-    useEffect(() => {
-        const squares = Array(BoardSize*BoardSize).fill(0);
+    useEffect(() => { 
+        const squares = Array(BoardSize*BoardSize).fill(0); //create an array of squares
         //console.log(boats);
         for(let i = 0; i < props.boats.length; i++){
             const boat = props.boats[i];
@@ -58,8 +58,8 @@ export default function Board(props) {
             props.setBoats(newBoats);
         }
     }
-
-    function isBoatOnSquare(index){
+    
+    function isBoatOnSquare(index){ //check if the boat is on the square
         //check if boat is on square and return index
         for(let i = 0; i < props.boats.length; i++){
             if((props.boats[i].x === (index % BoardSize)) && (props.boats[i].y === (Math.floor(index / BoardSize)))){
@@ -68,8 +68,8 @@ export default function Board(props) {
         }
         return -1;
     }
-
-    return (
+    
+    return ( //return the board
         <div style={{display: "inline-grid"}}>
             <DndProvider backend={HTML5Backend}>
                 <div className="board" style={ boardStyle }>
