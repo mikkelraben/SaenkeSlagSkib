@@ -33,7 +33,6 @@ function App() { //the main app
 
   const setCross = (index) => { //set the cross on the square
     setEnemyX([...enemyX, index]);
-    setOwnX([...ownX, index]);
   }
   
   const DonePlacing = () => { //when the player has placed all boats
