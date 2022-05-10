@@ -1,7 +1,7 @@
 import { DraggableItems } from "./Constants"
 import { useDrag } from "react-dnd"
 
-export function Boat(props){
+export function Boat(props){ //props: x, y, direction, length, index
     const [{ isDragging }, dragRef] = useDrag(() => ({
         type: DraggableItems.BOAT,
         item: {
@@ -14,15 +14,15 @@ export function Boat(props){
         }),
     }));
 
-    const GenerateBoat = () => {
+    const GenerateBoat = () => { //generate the boat 
         let boat = "";
-        for (let i = 0; i < props.length; i++) {
+        for (let i = 0; i < props.length; i++) { 
             boat += "🚤";
         }
         return boat;
     }
 
-    const style = {
+    const style = { //style the boat
         cursor: "move",
         // Janky way to get the boat to be centered
         height: props.direction===false ? (33*props.length)-5+"px" : 28+"px",
@@ -38,7 +38,7 @@ export function Boat(props){
         lineHeight: "2rem",
     }
     
-    return(
+    return( //render the boat
         <div ref={dragRef} style={style}>
             {GenerateBoat()}
         </div>
