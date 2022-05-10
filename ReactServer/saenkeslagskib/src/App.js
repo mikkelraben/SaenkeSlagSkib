@@ -55,7 +55,7 @@ function App() { //the main app
           width: "542px",
           gridTemplateColumns: "256px 256px",
           columnGap: "20px",}}>
-            <Board isRecieving={false} boats={boats} setBoats={setBoats} isDonePlacing={isDonePlacing} cross={ownX}/>
+            <Board isRecieving={false} boats={boats} setBoats={setBoats} setCross={() => {}} isDonePlacing={isDonePlacing} cross={ownX}/>
             <Board isRecieving={true} boats={enemyBoats} setBoats={setEnemyBoats} setCross={setCross} cross={enemyX}/>
             <div style={{position:"relative",top:10}}>
               <button onClick={() => {setBoats([]);setIsDonePlacing(false)}}>Reset</button>

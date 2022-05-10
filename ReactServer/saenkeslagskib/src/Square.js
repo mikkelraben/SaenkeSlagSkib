@@ -55,9 +55,13 @@ export default function Square(props){ //square component
         }),
     });
 
+    const handleSquareclick = () => { //click on the square
+        props.setCross(props.index);
+    }
+
     return ( //render the square
         <div>
-            <div ref={dropRef} className="square" onClick={props.setCross(props.index)} style={{ //style the square
+            <div ref={dropRef} onClick={handleSquareclick} className="square" style={{ //style the square
                 height:32,
                 width:32,
                 border:"0.1px solid black",
@@ -65,7 +69,6 @@ export default function Square(props){ //square component
                 position: 'relative'}}>
                 {props.children}
                 {props.cross?<div className="cross" style={{textAlign:"center",lineHeight:"32px",height:"100%"}}>X</div>:null}
-                
             </div>
             
         </div>
