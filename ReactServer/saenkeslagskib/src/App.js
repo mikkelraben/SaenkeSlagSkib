@@ -9,6 +9,8 @@ function App() { //the main app
   const [enemyBoats, setEnemyBoats] = useState([]); //the enemy boats
   const [isDonePlacing, setIsDonePlacing] = useState(false); //if the player has placed all boats
   const [socket, setSocket] = useState(null); //the socket
+  const [enemyX, setEnemyX] = useState([0,3,4]); //the enemy x
+  const [ownX, setOwnX] = useState([1,2,5]); //the own x
 
   useEffect(() => { //when the app loads
     const socket = io("http://localhost:3001");
@@ -50,8 +52,8 @@ function App() { //the main app
           width: "542px",
           gridTemplateColumns: "256px 256px",
           columnGap: "20px",}}>
-            <Board isRecieving={false} boats={boats} setBoats={setBoats} isDonePlacing={isDonePlacing}/>
-            <Board isRecieving={true} boats={enemyBoats} setBoats={setEnemyBoats}/>
+            <Board isRecieving={false} boats={boats} setBoats={setBoats} isDonePlacing={isDonePlacing} cross={ownX}/>
+            <Board isRecieving={true} boats={enemyBoats} setBoats={setEnemyBoats} cross={enemyX}/>
             <div style={{position:"relative",top:10}}>
               <button onClick={() => {setBoats([]);setIsDonePlacing(false)}}>Reset</button>
               <button onClick={() => DonePlacing()}>Done Placing</button>

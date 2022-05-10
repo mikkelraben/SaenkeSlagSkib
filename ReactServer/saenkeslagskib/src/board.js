@@ -21,6 +21,16 @@ export default function Board(props) {
         gridAutoColumns: "1fr"
     }
 
+    const isCrossOnSquare = (index) => { //check if the cross is on the square
+        for(let i = 0; i < props.cross.length; i++){ //for each cross
+            if(props.cross[i]===index){ //if the cross is on the square
+                return true;
+            }
+        }
+        return false; //if the cross is not on the square
+
+    }
+
     // when boats updates update state
     useEffect(() => { 
         const squares = Array(BoardSize*BoardSize).fill(0); //create an array of squares
@@ -75,7 +85,8 @@ export default function Board(props) {
                 <div className="board" style={ boardStyle }>
                     {squares.map((square, index) => {
                         return <Square key={index} index={index} handleBoatMove={handleBoatMove} BoardPlacable={props.isDonePlacing||props.isRecieving} state={squares} children={
-                            isBoatOnSquare(index) !== -1 ? <Boat index={isBoatOnSquare(index)} length={props.boats[isBoatOnSquare(index)].length} direction={props.boats[isBoatOnSquare(index)].direction}/> : null }/>
+                            isBoatOnSquare(index) !== -1 ? <Boat index={isBoatOnSquare(index)} length={props.boats[isBoatOnSquare(index)].length} direction={props.boats[isBoatOnSquare(index)].direction}/> : null }
+                            cross=[isCrossOnSquare(index)]/>
                     })}
                 </div>                
                 {!props.isDonePlacing&&!props.isRecieving&&
