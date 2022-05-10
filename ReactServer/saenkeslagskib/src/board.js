@@ -78,12 +78,6 @@ export default function Board(props) {
         }
         return -1;
     }
-
-    const handleSquareClick = (index) => {
-        //check if the square is a boat
-        props.setCross(index);
-        //console.log(props.cross);
-    }
     
     return ( //return the board
         <div style={{display: "inline-grid"}}>
@@ -92,7 +86,7 @@ export default function Board(props) {
                     {squares.map((square, index) => {
                         return <Square key={index} index={index} handleBoatMove={handleBoatMove} BoardPlacable={props.isDonePlacing||props.isRecieving} state={squares} children={
                             isBoatOnSquare(index) !== -1 ? <Boat index={isBoatOnSquare(index)} length={props.boats[isBoatOnSquare(index)].length} direction={props.boats[isBoatOnSquare(index)].direction}/> : null }
-                            cross={isCrossOnSquare(index)} setCross={handleSquareClick}/>
+                            cross={isCrossOnSquare(index)} setCross={props.setCross}/>
                     })}
                 </div>                
                 {!props.isDonePlacing&&!props.isRecieving&&
