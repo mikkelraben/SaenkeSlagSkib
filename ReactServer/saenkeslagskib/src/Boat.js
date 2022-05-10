@@ -18,9 +18,12 @@ export function Boat(props){ //props: x, y, direction, length, index
         let boat = "";
         for (let i = 0; i < props.length; i++) { 
             boat += "🚤";
+            
         }
         return boat;
     }
+
+
 
     const style = { //style the boat
         cursor: "move",
@@ -40,7 +43,7 @@ export function Boat(props){ //props: x, y, direction, length, index
     
     return( //render the boat
         <div ref={dragRef} style={style}>
-            {GenerateBoat()}
+            <img src={process.env.PUBLIC_URL + '/Bot'+(props.length-1)+'.png'} />
         </div>
     )
 }
