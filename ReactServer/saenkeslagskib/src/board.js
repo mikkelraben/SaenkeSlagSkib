@@ -35,14 +35,17 @@ export default function Board(props) {
     useEffect(() => { 
         const squares = Array(BoardSize*BoardSize).fill(0); //create an array of squares
         //console.log(boats);
-        for(let i = 0; i < props.boats.length; i++){
-            const boat = props.boats[i];
-            for(let j = 0; j < boat.length; j++){
-                const x = boat.x + (boat.direction ? j : 0);
-                const y = boat.y + (boat.direction ? 0 : j);
-                squares[x+y*BoardSize] = i+1;
+        if(props.boats){
+            for(let i = 0; i < props.boats.length; i++){
+                const boat = props.boats[i];
+                for(let j = 0; j < boat.length; j++){
+                    const x = boat.x + (boat.direction ? j : 0);
+                    const y = boat.y + (boat.direction ? 0 : j);
+                    squares[x+y*BoardSize] = i+1;
+                }
             }
         }
+        
         //console.log(squares);
         setState(squares);
     }, [props.boats]);
@@ -71,6 +74,9 @@ export default function Board(props) {
     
     function isBoatOnSquare(index){ //check if the boat is on the square
         //check if boat is on square and return index
+        if(!props.boats){
+            return -1;
+        }
         for(let i = 0; i < props.boats.length; i++){
             if((props.boats[i].x === (index % BoardSize)) && (props.boats[i].y === (Math.floor(index / BoardSize)))){
                 return i;

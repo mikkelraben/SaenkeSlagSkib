@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
  
 function App() { //the main app
   const [boats, setBoats] = useState([]); //the boats
-  const [enemyBoats, setEnemyBoats] = useState([]); //the enemy boats
   const [isDonePlacing, setIsDonePlacing] = useState(false); //if the player has placed all boats
   const [socket, setSocket] = useState(null); //the socket
   const [enemyX, setEnemyX] = useState([]); //the enemy x
@@ -22,12 +21,10 @@ function App() { //the main app
       try { //try to parse the data
         const boats = data;
         console.log(boats);
-        setEnemyBoats(boats);
         setGameStarted(true);
       } catch (error) { //if the data is not valid
         console.log(error);
         console.log(data);
-        setEnemyBoats([]);
       }
     });
 
@@ -39,7 +36,6 @@ function App() { //the main app
     socket.on("GameOver", () => {
       //set the game to not running
       setGameStarted(false);
-      setEnemyBoats([]);
       setBoats([]);
       setIsDonePlacing(false);
     });
@@ -58,9 +54,18 @@ function App() { //the main app
     //console.log(boats);
   }
 
+  const turnText = () => { //return the text for the turn
+    if(CurrentTurn){
+      return<h2>Your turn</h2>;
+    } else {
+      return <h2>Enemy turn</h2>;
+    }
+  }
+
   return ( 
     <div className="App"> 
       <h1>BattleShip Game 0.1</h1> 
+      {turnText()}
       {socket && 
         <div style={{width:"100%", height:"100%", margin:"auto"}}>
         <div style={{      
@@ -70,7 +75,7 @@ function App() { //the main app
           gridTemplateColumns: "256px 256px",
           columnGap: "20px",}}>
             <Board isRecieving={false} boats={boats} setBoats={setBoats} setCross={() => {}} isDonePlacing={isDonePlacing} cross={ownX}/>
-            <Board isRecieving={true} boats={enemyBoats} setBoats={setEnemyBoats} setCross={setCross} cross={enemyX}/>
+            <Board isRecieving={true} setCross={setCross} cross={enemyX}/>
             {!GameStarted&&
             <div style={{position:"relative",top:10}}>
               <button onClick={() => {setBoats([]);setIsDonePlacing(false)}}>Reset</button>

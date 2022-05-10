@@ -23,7 +23,7 @@ const logPlayers = () => {
 
 const checkifReady = () => {
     logPlayers();
-    if(player1 && player2){
+    if(player1 && player2 && player1Boats.length > 0 && player2Boats.length > 0){
         startGame();
     }
 }
@@ -32,8 +32,9 @@ const startGame = () => {
     console.log("game started");
     player1Turn = false;
     //for each player send the boats
-    player1.emit("Init", player2Boats);
-    player2.emit("Init", player1Boats);
+    player1.emit("Init", {boats: player2Boats, player1: true} );
+    player2.emit("Init", {boats: player1Boats, player1: false});
+    gameRunning = true;
 
     changeTurn();
 };
@@ -69,7 +70,8 @@ const isPlayer = (player) => {
         if(player.id === player1.id){
             return true;
         }
-    }else if(player2){
+    }
+    if(player2){
         if(player.id === player2.id){
             return true;
         }
@@ -99,40 +101,56 @@ const InitPlayers = (player, boats) => {
 const removePlayer = (player) => {
     if(player === player1){
         player1 = null;
-        player1Boats = [];
-        player2Boats = [];
         if(player2 !== null){
             player2.emit("GameOver", null);
         }
-        gameRunning = false;
+        checkifReady();
     } else if(player === player2){
         player2 = null;
-        player1Boats = [];
-        player2Boats = [];
         if(player1 !== null){
             player1.emit("GameOver", null);
         }
-        gameRunning = false;
+        checkifReady();
     }
-    checkifReady();
-    if(player1 === null && player2 === null){
+    
+    if(player1 === null || player2 === null){
         player1Turn = true;
-    }
+        gameRunning = false;
+        player1Boats = [];
+        player2Boats = [];
 
+    }
+}
+
+const handleAttack = (player) => {
+    if(player1Turn){
+        if(player.id == player1.id){
+            console.log("player1 attacked");
+            changeTurn();
+        }
+    } else {
+        if(player.id == player2.id){
+            console.log("player2 attacked");
+            changeTurn();
+        }
+    }
 }
 
 io.on("connection", (socket) => {
     socket.on("Init", data => {
         //parse data from json to list of boats
         try {
-            const boats = JSON.parse(data);
-            const squares = [];
-            for (let i = 0; i < (10*10); i++) { //create a list of squares
-                squares.push(-1); 
+            if(!gameRunning){
+                const boats = JSON.parse(data);
+                const squares = [];
+                for (let i = 0; i < (10*10); i++) { //create a list of squares
+                    squares.push(-1); 
+                }
+                console.log(boats);
+                //socket.broadcast.emit("Init", boats);
+                InitPlayers(socket, boats);
             }
-            console.log(boats);
-            //socket.broadcast.emit("Init", boats);
-            InitPlayers(socket, boats);
+
         } catch (error) { //if the data is not valid
             console.log(error);
             console.log(data);
@@ -151,9 +169,7 @@ io.on("connection", (socket) => {
     });
     //called when player attacks a tile
     socket.on("Attack", data => {
-        console.log("Attack");
-        console.log(data);
-        socket.broadcast.emit("Attack", data);
+        handleAttack(socket);
     });
     //when player disconnects
     socket.on("disconnect", () => {
