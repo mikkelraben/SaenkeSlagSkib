@@ -64,6 +64,8 @@ export default function Square(props){ //square component
                 background: isOver&&canDrop  ?"yellow":"white",
                 position: 'relative'}}>
                 {props.children}
+                {props.cross?<div className="cross">X</div>:null}
+                
             </div>
             
         </div>
