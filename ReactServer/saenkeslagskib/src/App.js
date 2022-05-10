@@ -9,8 +9,8 @@ function App() { //the main app
   const [enemyBoats, setEnemyBoats] = useState([]); //the enemy boats
   const [isDonePlacing, setIsDonePlacing] = useState(false); //if the player has placed all boats
   const [socket, setSocket] = useState(null); //the socket
-  const [enemyX, setEnemyX] = useState([0,3,4]); //the enemy x
-  const [ownX, setOwnX] = useState([1,2,5]); //the own x
+  const [enemyX, setEnemyX] = useState([]); //the enemy x
+  const [ownX, setOwnX] = useState([]); //the own x
 
   useEffect(() => { //when the app loads
     const socket = io("http://localhost:3001");
@@ -32,8 +32,7 @@ function App() { //the main app
   }, []);
 
   const setCross = (index) => { //set the cross on the square
-    setEnemyX([...enemyX, index]);
-    setOwnX([...ownX, index]);
+    socket.emit("Attack", index);
   }
   
   const DonePlacing = () => { //when the player has placed all boats

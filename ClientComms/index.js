@@ -11,6 +11,7 @@ var player2Boats = [];
 var player1BoatsPlaced = false;
 var player2BoatsPlaced = false;
 var player1Turn = true;
+var gameRunning = false;
 
 const logPlayers = () => {
     if(player1){
