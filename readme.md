@@ -22,4 +22,10 @@ npm start
 
 After starting the client server the backend must be started
 
-#TODO
+```shell
+cd ClientComms
+```
+
+```
+nodemon index
+```
