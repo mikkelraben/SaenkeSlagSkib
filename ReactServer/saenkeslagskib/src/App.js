@@ -31,7 +31,10 @@ function App() { //the main app
     return () => socket.close(); //when the app unloads
   }, []);
 
-
+  const setCross = (index) => { //set the cross on the square
+    setEnemyX([...enemyX, index]);
+    setOwnX([...ownX, index]);
+  }
   
   const DonePlacing = () => { //when the player has placed all boats
     setIsDonePlacing(true);
@@ -53,7 +56,7 @@ function App() { //the main app
           gridTemplateColumns: "256px 256px",
           columnGap: "20px",}}>
             <Board isRecieving={false} boats={boats} setBoats={setBoats} isDonePlacing={isDonePlacing} cross={ownX}/>
-            <Board isRecieving={true} boats={enemyBoats} setBoats={setEnemyBoats} cross={enemyX}/>
+            <Board isRecieving={true} boats={enemyBoats} setBoats={setEnemyBoats} setCross={setCross} cross={enemyX}/>
             <div style={{position:"relative",top:10}}>
               <button onClick={() => {setBoats([]);setIsDonePlacing(false)}}>Reset</button>
               <button onClick={() => DonePlacing()}>Done Placing</button>

@@ -57,7 +57,7 @@ export default function Square(props){ //square component
 
     return ( //render the square
         <div>
-            <div ref={dropRef} className="square" style={{ //style the square
+            <div ref={dropRef} className="square" onClick={props.setCross(props.index)} style={{ //style the square
                 height:32,
                 width:32,
                 border:"0.1px solid black",
