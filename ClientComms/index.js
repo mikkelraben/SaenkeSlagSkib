@@ -12,21 +12,43 @@ var player1BoatsPlaced = false;
 var player2BoatsPlaced = false;
 var player1Turn = true;
 
+const logPlayers = () => {
+    if(player1){
+        console.log("user1: "+player1.id);
+    }
+    if(player2){
+        console.log("user2: "+player2.id);
+    }
+    console.log("\n");
+}
+
 const checkifReady = () => {
-    console.log(player1BoatsPlaced, player2BoatsPlaced);
-    //console.log(player1, player2);
+    //console.log(player1BoatsPlaced, player2BoatsPlaced);
+    logPlayers();
     if(player1 && player2 && player1BoatsPlaced && player2BoatsPlaced){
-        io.emit("StartGame", {player1Boats, player2Boats});
+        startGame();
     }
 }
 
+const startGame = () => {
+    console.log("game started");
+    player1Turn = true;
+    //for each player send the boats
+    player1.emit("Init", player2Boats);
+    player2.emit("Init", player1Boats);
+    //for each player send the turn
+    player1.emit("Turn", true);
+    player2.emit("Turn", false);
+};
+    
+
 const addPlayer = (player, boats) => {
-    if(player1 === null){
+    if(player1 === null && player2 !== player){
         player1 = player;
         player1Boats = boats;
         player1BoatsPlaced = true;
         checkifReady();
-    } else if(player2 === null){
+    } else if(player2 === null && player1 !== player){
         player2 = player;
         player2Boats = boats;
         player2BoatsPlaced = true;
@@ -45,6 +67,10 @@ const removePlayer = (player) => {
         player2BoatsPlaced = false;
     }
     checkifReady();
+    if(player1 === null && player2 === null){
+        player1Turn = true;
+    }
+
 }
 
 io.on("connection", (socket) => {
@@ -57,13 +83,12 @@ io.on("connection", (socket) => {
                 squares.push(-1); 
             }
             console.log(boats);
-            socket.broadcast.emit("Init", boats);
+            //socket.broadcast.emit("Init", boats);
             addPlayer(socket, boats);
-            checkifReady();
         } catch (error) { //if the data is not valid
             console.err(error);
             console.log(data);
-            socket.broadcast.emit("Init", {boats: []}); //send an empty list
+            //socket.broadcast.emit("Init", {boats: []}); //send an empty list
         }
         //create list of squares
         console.log("Data");
@@ -84,6 +109,7 @@ io.on("connection", (socket) => {
     });
     //when player disconnects
     socket.on("disconnect", () => {
+        console.log("Disconnected");
         removePlayer(socket);
     });
     //console.log("a user connected");
