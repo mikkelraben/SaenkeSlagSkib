@@ -64,7 +64,7 @@ export default function Square(props){ //square component
                 background: isOver&&canDrop  ?"yellow":"white",
                 position: 'relative'}}>
                 {props.children}
-                {props.cross?<div className="cross">X</div>:null}
+                {props.cross?<div className="cross" style={{textAlign:"center",lineHeight:"32px",height:"100%"}}>X</div>:null}
                 
             </div>
             
