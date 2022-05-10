@@ -11,6 +11,8 @@ function App() { //the main app
   const [socket, setSocket] = useState(null); //the socket
   const [enemyX, setEnemyX] = useState([]); //the enemy x
   const [ownX, setOwnX] = useState([]); //the own x
+  const [CurrentTurn, setCurrentTurn] = useState(false); //if it is the players turn
+  const [GameStarted, setGameStarted] = useState(false); //if the game has started
 
   useEffect(() => { //when the app loads
     const socket = io("http://localhost:3001");
@@ -21,12 +23,27 @@ function App() { //the main app
         const boats = data;
         console.log(boats);
         setEnemyBoats(boats);
+        setGameStarted(true);
       } catch (error) { //if the data is not valid
         console.log(error);
         console.log(data);
         setEnemyBoats([]);
       }
     });
+
+    socket.on("Turn", data => {
+      //set the current turn
+      setCurrentTurn(data);
+    });
+
+    socket.on("GameOver", () => {
+      //set the game to not running
+      setGameStarted(false);
+      setEnemyBoats([]);
+      setBoats([]);
+      setIsDonePlacing(false);
+    });
+
 
     return () => socket.close(); //when the app unloads
   }, []);
@@ -41,8 +58,6 @@ function App() { //the main app
     //console.log(boats);
   }
 
-
-
   return ( 
     <div className="App"> 
       <h1>BattleShip Game 0.1</h1> 
@@ -56,10 +71,11 @@ function App() { //the main app
           columnGap: "20px",}}>
             <Board isRecieving={false} boats={boats} setBoats={setBoats} setCross={() => {}} isDonePlacing={isDonePlacing} cross={ownX}/>
             <Board isRecieving={true} boats={enemyBoats} setBoats={setEnemyBoats} setCross={setCross} cross={enemyX}/>
+            {!GameStarted&&
             <div style={{position:"relative",top:10}}>
               <button onClick={() => {setBoats([]);setIsDonePlacing(false)}}>Reset</button>
               <button onClick={() => DonePlacing()}>Done Placing</button>
-            </div>
+            </div>}
         </div>
       </div>
       } 

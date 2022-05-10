@@ -8,8 +8,6 @@ var player1 = null;
 var player2 = null;
 var player1Boats = [];
 var player2Boats = [];
-var player1BoatsPlaced = false;
-var player2BoatsPlaced = false;
 var player1Turn = true;
 var gameRunning = false;
 
@@ -24,48 +22,97 @@ const logPlayers = () => {
 }
 
 const checkifReady = () => {
-    //console.log(player1BoatsPlaced, player2BoatsPlaced);
     logPlayers();
-    if(player1 && player2 && player1BoatsPlaced && player2BoatsPlaced){
+    if(player1 && player2){
         startGame();
     }
 }
 
 const startGame = () => {
     console.log("game started");
-    player1Turn = true;
+    player1Turn = false;
     //for each player send the boats
     player1.emit("Init", player2Boats);
     player2.emit("Init", player1Boats);
-    //for each player send the turn
-    player1.emit("Turn", true);
-    player2.emit("Turn", false);
-};
-    
 
-const addPlayer = (player, boats) => {
-    if(player1 === null && player2 !== player){
-        player1 = player;
-        player1Boats = boats;
-        player1BoatsPlaced = true;
-        checkifReady();
-    } else if(player2 === null && player1 !== player){
-        player2 = player;
-        player2Boats = boats;
-        player2BoatsPlaced = true;
-        checkifReady();
+    changeTurn();
+};
+
+const changeTurn = () => {
+    if(player1Turn){
+        player1.emit("Turn", false);
+        player2.emit("Turn", true);
+        player1Turn = false;
+    }else{
+        player1.emit("Turn", true);
+        player2.emit("Turn", false);
+        player1Turn = true;
     }
+}
+
+const addPlayer = (player) => {
+    if(!player1){
+        player1 = player;
+        console.log("player1 added");
+        checkifReady();
+    }else if(!player2 && player1){
+        player2 = player;
+        console.log("player2 added");
+        checkifReady();
+    }else{
+        console.log("no more players");
+    }
+}
+
+const isPlayer = (player) => {
+    if(player1){
+        if(player.id === player1.id){
+            return true;
+        }
+    }else if(player2){
+        if(player.id === player2.id){
+            return true;
+        }
+    }else{
+        return false;
+    }
+}
+
+const addBoats = (player, boats) => {
+    if(player === player1){
+        player1Boats = boats;
+    }else{
+        player2Boats = boats;
+    }
+}
+
+const InitPlayers = (player, boats) => {
+    if(isPlayer(player)){
+        addBoats(player, boats);
+    } else {
+        addPlayer(player);
+        addBoats(player, boats);
+    }
+    checkifReady();
 }
 
 const removePlayer = (player) => {
     if(player === player1){
         player1 = null;
         player1Boats = [];
-        player1BoatsPlaced = false;
+        player2Boats = [];
+        if(player2 !== null){
+            player2.emit("GameOver", null);
+        }
+        gameRunning = false;
     } else if(player === player2){
         player2 = null;
+        player1Boats = [];
         player2Boats = [];
-        player2BoatsPlaced = false;
+        if(player1 !== null){
+            player1.emit("GameOver", null);
+        }
+        gameRunning = false;
     }
     checkifReady();
     if(player1 === null && player2 === null){
@@ -85,9 +132,9 @@ io.on("connection", (socket) => {
             }
             console.log(boats);
             //socket.broadcast.emit("Init", boats);
-            addPlayer(socket, boats);
+            InitPlayers(socket, boats);
         } catch (error) { //if the data is not valid
-            console.err(error);
+            console.log(error);
             console.log(data);
             //socket.broadcast.emit("Init", {boats: []}); //send an empty list
         }

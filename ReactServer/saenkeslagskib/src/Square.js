@@ -66,7 +66,8 @@ export default function Square(props){ //square component
                 width:32,
                 border:"0.1px solid black",
                 background: isOver&&canDrop  ?"yellow":"white",
-                position: 'relative'}}>
+                position: 'relative',
+                margin:"0px 0px -1px -1px"}}>
                 {props.children}
                 {props.cross?<div className="cross" style={{textAlign:"center",lineHeight:"32px",height:"100%"}}>X</div>:null}
             </div>

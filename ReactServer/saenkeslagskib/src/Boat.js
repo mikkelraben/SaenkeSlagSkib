@@ -43,7 +43,7 @@ export function Boat(props){ //props: x, y, direction, length, index
     
     return( //render the boat
         <div ref={dragRef} style={style}>
-            <img src={process.env.PUBLIC_URL + '/Bot'+(props.length-1)+'.png'} />
+            <img src={process.env.PUBLIC_URL + '/Bot'+(props.length-1)+'.png'} style={props.direction===false ? {transform:"rotate(90deg)", transformOrigin:"16px 16px"}:{}}/>
         </div>
     )
 }
