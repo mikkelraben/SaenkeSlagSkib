@@ -33,6 +33,8 @@ const checkifReady = () => {
 const startGame = () => {
     console.log("game started");
     player1Turn = false;
+    var player1crosses = [];
+    var player2crosses = [];
     //for each player send the boats
     player1.emit("Init", {boats: player2Boats, player1: true} );
     player2.emit("Init", {boats: player1Boats, player1: false});
@@ -106,6 +108,8 @@ const removePlayer = (player) => {
         if(player2 !== null){
             player2.emit("GameOver", null);
             player2 = null;
+            var player1crosses = [];
+            var player2crosses = [];
         }
         checkifReady();
     } else if(player === player2){
@@ -113,6 +117,8 @@ const removePlayer = (player) => {
         if(player1 !== null){
             player1.emit("GameOver", null);
             player1 = null;
+            var player1crosses = [];
+            var player2crosses = [];
         }
         checkifReady();
     }
