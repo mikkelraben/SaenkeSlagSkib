@@ -2,7 +2,7 @@ import Board from "./board";
 import {io} from "socket.io-client";
 import React from "react";
 import { useEffect, useState } from "react";
-
+import {BoardSize} from "./Constants";
  
 function App() { //the main app
   const [boats, setBoats] = useState([]); //the boats
@@ -79,6 +79,42 @@ function App() { //the main app
     socket.emit("Attack", {index: index});
   }
 
+  const isBoatSunk = (boat) => { //check if the boat is sunk
+    let isSunk = true;
+    if (boat.direction === false){ //if the boat is vertical
+      for (let i = boat.y; i < boat.y + boat.length; i++){ //for each square in the boat
+        //Er der et kryds eller ikke!
+        var result = isThereX(boat.x+(boat.y+i)*BoardSize);
+        //Returner false hvis der ikke er et kryds
+        if (result === false){
+          isSunk = false;
+        }
+      }
+
+
+    }
+    else { //if the boat is horizontal
+      for (let i = boat.x; i < boat.x + boat.length; i++){ //for each square in the boat
+        //Er der et kryds eller ikke!
+        var result = isThereX((boat.x+i)+boat.y*BoardSize);
+        //Returner false hvis der ikke er et kryds
+        if (result === false){
+          isSunk = false;
+        }
+      }
+    }
+  }
+
+  const isThereX = (index) => { //check if there is a x on the square
+    if(ownX){
+      for(let i = 0; i < ownX.length; i++){ //for each cross
+          if(ownX[i].index===index){ //if the cross is on the square
+              return ownX[i];
+          }
+      }
+      return false; //if the cross is not on the square
+    }
+  }
 
 
   const DonePlacing = () => { //when the player has placed all boats
