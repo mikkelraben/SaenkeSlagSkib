@@ -108,8 +108,6 @@ const removePlayer = (player) => {
         if(player2 !== null){
             player2.emit("GameOver", null);
             player2 = null;
-            var player1crosses = [];
-            var player2crosses = [];
         }
         checkifReady();
     } else if(player === player2){
@@ -117,8 +115,6 @@ const removePlayer = (player) => {
         if(player1 !== null){
             player1.emit("GameOver", null);
             player1 = null;
-            var player1crosses = [];
-            var player2crosses = [];
         }
         checkifReady();
     }
@@ -128,7 +124,8 @@ const removePlayer = (player) => {
         gameRunning = false;
         player1Boats = [];
         player2Boats = [];
-
+        var player1crosses = [];
+        var player2crosses = [];
     }
 }
 
@@ -137,10 +134,11 @@ const handleAttack = (player, data) => {
         if(player1){ //if player1 is still connected
             if(player.id == player1.id){ //if player1 is attacking
                 const hit = CheckifBoatOnTile(player1, data.index); //check if tile is a boat
+                player1crosses = [...player1crosses, {index:data.index, hit: hit}];
                 if(player2){ //if player2 is still connected
-                    player2.emit("Attack", {index: data.index, hit: hit}); //send attack to player2
+                    player2.emit("Attack", player1crosses); //send attack to player2
                 }
-                player1.emit("Hit", {index: data.index, hit: hit}); //send hit to player1
+                player1.emit("Hit", player1crosses); //send hit to player1
                 console.log("player1 attacked"); //log attack
                 console.log({index: data.index, hit: hit});//log hit
                 console.log(data);//log data
