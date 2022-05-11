@@ -128,10 +128,13 @@ const handleAttack = (player, data) => {
     if(player1Turn){
         if(player1){
             if(player.id == player1.id){
-                player2.emit("Attack", {index: data.index, hit: true});
-                player1.emit("Hit", {index: data.index, hit: true});
+                const hit = CheckifBoatOnTile(player1, data.index);
+                if(player2){
+                    player2.emit("Attack", {index: data.index, hit: hit});
+                }
+                player1.emit("Hit", {index: data.index, hit: hit});
                 console.log("player1 attacked");
-                console.log({index: data.index, hit: false});
+                console.log({index: data.index, hit: hit});
                 console.log(data);
                 changeTurn();
             }
@@ -140,10 +143,13 @@ const handleAttack = (player, data) => {
     } else {
         if(player2){
             if(player.id == player2.id){
-                player1.emit("Attack", {index: data.index, hit: false});
-                player2.emit("Hit", {index: data.index, hit: false});
+                const hit = CheckifBoatOnTile(player2, data.index);
+                if(player1){
+                    player1.emit("Attack", {index: data.index, hit: hit});
+                }
+                player2.emit("Hit", {index: data.index, hit: hit});
                 console.log("player2 attacked");
-                console.log({index: data.index, hit: false});
+                console.log({index: data.index, hit: hit});
                 console.log(data);
                 changeTurn();
             }
@@ -151,22 +157,47 @@ const handleAttack = (player, data) => {
     }
 }
 
-const CheckifBoatOnTile = (player, index) => {
-    if(player === player1){
-        for(var i = 0; i < player1Boats.length; i++){
-            var boat = player1Boats[i];
-            for(var j = 0; j < boat.length; j++){
-                //todo
+const checkiftilehasboat = (boats, squareIndex) => {
+    const x = squareIndex % 8;
+    const y = Math.floor(squareIndex / 8);
+
+    console.log(boats);
+    console.log(x);
+    console.log(y);
+
+    for(let i = 0; i < boats.length; i++){ //for each boat
+        if(boats[i].direction === false){ //if boat is vertical
+            for(let j = 0; j < boats[i].length; j++){ //for each tile in boat
+                if(boats[i].x === x && boats[i].y+j === y){ //if tile is in boat
+                    return true;
+                }
             }
-        }
-    } else {
-        for(var i = 0; i < player2Boats.length; i++){
-            var boat = player2Boats[i];
-            for(var j = 0; j < boat.length; j++){
-                //todo
+        } else { //if boat is horizontal
+            for(let j = 0; j < boats[i].length; j++){ //for each tile in boat
+                if(boats[i].x+j === x && boats[i].y === y){ //if tile is in boat
+                    return true;
+                }
             }
         }
     }
+    return false;
+}
+
+const CheckifBoatOnTile = (player, squareIndex) => {
+    if(player === player1){
+        console.log("player1");
+        if(checkiftilehasboat(player2Boats, squareIndex)){
+            return true;
+        }
+    }
+    if(player === player2){
+        console.log("player2");
+        if(checkiftilehasboat(player1Boats, squareIndex)){
+            return true;
+        }
+    }
+    console.log("no boat");
+    return false;
 }
 
 
