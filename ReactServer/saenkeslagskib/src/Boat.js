@@ -19,16 +19,16 @@ export function Boat(props){ //props: x, y, direction, length, index
     
 
     var style = { //style the boat
-        cursor: props.draggable===true ?"move":"default",
-        display: isDragging&&props.index!==-1 ? "none":"block",
-        position: "absolute",
-        top: props.top,
-        left: props.left,
-        zIndex: 1,
-        userSelect: "none",
-        width: props.direction===true ? props.length*32+"px" : "32px",
-        height:  props.direction===true ? "32px" : props.length*32+"px",
-        draggable: false
+        cursor: props.draggable===true ?"move":"default", //if the boat is draggable
+        display: isDragging&&props.index!==-1 ? "none":"block", //if the boat is being dragged
+        position: "absolute",  //position the boat
+        top: props.top,//props.y*BoardSize,
+        left: props.left, //props.x*BoardSize,
+        zIndex: 1, //set the z-index
+        userSelect: "none", //disable selection
+        width: props.direction===true ? props.length*32+"px" : "32px", //set the width
+        height:  props.direction===true ? "32px" : props.length*32+"px", //set the height
+        draggable: false //disable dragging
     }
     
     return( //render the boat

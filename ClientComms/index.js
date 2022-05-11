@@ -201,19 +201,19 @@ const CheckifBoatOnTile = (player, squareIndex) => {
 }
 
 
-io.on("connection", (socket) => {
-    socket.on("Init", data => {
+io.on("connection", (socket) => { //when a player connects
+    socket.on("Init", data => { //when a player sends init
         //parse data from json to list of boats
-        try {
-            if(!gameRunning){
-                const boats = JSON.parse(data);
-                const squares = [];
+        try { //try to parse data
+            if(!gameRunning){ //if game is not running
+                const boats = JSON.parse(data); //parse data
+                const squares = []; //create list of squares
                 for (let i = 0; i < (10*10); i++) { //create a list of squares
-                    squares.push(-1); 
+                    squares.push(-1); //add -1 to list
                 }
-                console.log(boats);
+                console.log(boats); //print boats
                 //socket.broadcast.emit("Init", boats);
-                InitPlayers(socket, boats);
+                InitPlayers(socket, boats); //send boats to other player
             }else{
                 console.log("game already running");
             }
