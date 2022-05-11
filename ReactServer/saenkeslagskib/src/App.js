@@ -61,6 +61,9 @@ function App() { //the main app
   }, [ownX, socket]);
 
   const setCross = (index) => { //set the cross on the square
+    const crosses = [...enemyX];
+    crosses.push(index);
+    setEnemyX(crosses);
     socket.emit("Attack", index);
   }
 

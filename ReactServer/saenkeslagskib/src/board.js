@@ -30,8 +30,6 @@ export default function Board(props) {
             }
             return false; //if the cross is not on the square
         }
-
-
     }
 
     // when boats updates update state
