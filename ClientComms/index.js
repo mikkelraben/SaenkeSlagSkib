@@ -125,17 +125,17 @@ const removePlayer = (player) => {
 }
 
 const handleAttack = (player, data) => {
-    if(player1Turn){
-        if(player1){
-            if(player.id == player1.id){
-                const hit = CheckifBoatOnTile(player1, data.index);
-                if(player2){
-                    player2.emit("Attack", {index: data.index, hit: hit});
+    if(player1Turn){ //if player1's turn
+        if(player1){ //if player1 is still connected
+            if(player.id == player1.id){ //if player1 is attacking
+                const hit = CheckifBoatOnTile(player1, data.index); //check if tile is a boat
+                if(player2){ //if player2 is still connected
+                    player2.emit("Attack", {index: data.index, hit: hit}); //send attack to player2
                 }
-                player1.emit("Hit", {index: data.index, hit: hit});
-                console.log("player1 attacked");
-                console.log({index: data.index, hit: hit});
-                console.log(data);
+                player1.emit("Hit", {index: data.index, hit: hit}); //send hit to player1
+                console.log("player1 attacked"); //log attack
+                console.log({index: data.index, hit: hit});//log hit
+                console.log(data);//log data
                 changeTurn();
             }
         }
@@ -157,13 +157,13 @@ const handleAttack = (player, data) => {
     }
 }
 
-const checkiftilehasboat = (boats, squareIndex) => {
-    const x = squareIndex % 8;
-    const y = Math.floor(squareIndex / 8);
+const checkiftilehasboat = (boats, squareIndex) => { //check if tile has a boat
+    const x = squareIndex % 8;//get x
+    const y = Math.floor(squareIndex / 8); //get y
 
-    console.log(boats);
-    console.log(x);
-    console.log(y);
+    console.log(boats); //log boats
+    console.log(x); //log x
+    console.log(y); //log y
 
     for(let i = 0; i < boats.length; i++){ //for each boat
         if(boats[i].direction === false){ //if boat is vertical
@@ -183,20 +183,20 @@ const checkiftilehasboat = (boats, squareIndex) => {
     return false;
 }
 
-const CheckifBoatOnTile = (player, squareIndex) => {
-    if(player === player1){
+const CheckifBoatOnTile = (player, squareIndex) => { //check if tile has a boat
+    if(player === player1){ //if player1
         console.log("player1");
-        if(checkiftilehasboat(player2Boats, squareIndex)){
+        if(checkiftilehasboat(player2Boats, squareIndex)){ //if tile has a boat
             return true;
         }
     }
-    if(player === player2){
+    if(player === player2){ //if player2
         console.log("player2");
-        if(checkiftilehasboat(player1Boats, squareIndex)){
+        if(checkiftilehasboat(player1Boats, squareIndex)){ //if tile has a boat
             return true;
         }
     }
-    console.log("no boat");
+    console.log("no boat");//if no boat
     return false;
 }
 
