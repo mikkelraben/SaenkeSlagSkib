@@ -33,8 +33,8 @@ const checkifReady = () => {
 const startGame = () => {
     console.log("game started");
     player1Turn = false;
-    var player1crosses = [];
-    var player2crosses = [];
+    player1crosses = [];
+    player2crosses = [];
     //for each player send the boats
     player1.emit("Init", {boats: player2Boats, player1: true} );
     player2.emit("Init", {boats: player1Boats, player1: false});
