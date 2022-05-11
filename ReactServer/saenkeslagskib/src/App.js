@@ -103,6 +103,7 @@ function App() { //the main app
         }
       }
     }
+    console.log(isSunk);
   }
 
   const isThereX = (index) => { //check if there is a x on the square
@@ -156,6 +157,7 @@ function App() { //the main app
               <button onClick={() => {setBoats([]);setIsDonePlacing(false)}}>Reset</button>
               <button onClick={() => DonePlacing()}>Done Placing</button>
             </div>}
+            <button onClick={()=>{isBoatSunk(boats[0])}}>Sunk?</button>
           </div>
         </div>
       } 
