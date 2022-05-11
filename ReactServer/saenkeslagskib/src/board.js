@@ -91,9 +91,21 @@ export default function Board(props) {
             <DndProvider backend={HTML5Backend}>
                 <div className="board" style={ boardStyle }>
                     {squares.map((square, index) => {
-                        return <Square key={index} index={index} handleBoatMove={handleBoatMove} BoardPlacable={props.isDonePlacing||props.isRecieving} state={squares} children={
-                            isBoatOnSquare(index) !== -1 ? <Boat index={isBoatOnSquare(index)} length={props.boats[isBoatOnSquare(index)].length} direction={props.boats[isBoatOnSquare(index)].direction} draggable={!props.isDonePlacing&&!props.isRecieving}/> : null }
-                            cross={isCrossOnSquare(index)} setCross={props.setCross}/>
+                        return (
+                            <Square key={index} 
+                            index={index} 
+                            handleBoatMove={handleBoatMove} 
+                            BoardPlacable={props.isDonePlacing||props.isRecieving} 
+                            state={squares} 
+                            cross={isCrossOnSquare(index)} 
+                            setCross={props.setCross}
+                            children={isBoatOnSquare(index) !== -1 ? 
+                                <Boat index={isBoatOnSquare(index)} 
+                                    length={props.boats[isBoatOnSquare(index)].length} 
+                                    direction={props.boats[isBoatOnSquare(index)].direction} 
+                                    draggable={!props.isDonePlacing&&!props.isRecieving}/>
+                                : null }
+                            />)
                     })}
                 </div>                
                 {!props.isDonePlacing&&!props.isRecieving&&
