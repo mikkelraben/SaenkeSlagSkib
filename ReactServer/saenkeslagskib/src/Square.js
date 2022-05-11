@@ -69,7 +69,20 @@ export default function Square(props){ //square component
                 position: 'relative',
                 margin:"0px 0px -1px -1px"}}>
                 {props.children}
-                {props.cross?<div className="cross" style={{fontWeight:"bolder",textAlign:"center",lineHeight:"32px",height:"100%",width:"100%",zIndex:3,position:"absolute",userSelect:"none"}}>X</div>:null}
+                {props.cross?<div className="cross" style={{
+                    fontWeight:"bolder",
+                    textAlign:"center",
+                    lineHeight:"32px",
+                    height:"100%",
+                    width:"100%",
+                    zIndex:3,
+                    position:"absolute",
+                    userSelect:"none",
+                    color:props.cross.hit? "red":"black"
+                    }}>
+                        X
+                        </div>
+                :null}
             </div>
             
         </div>

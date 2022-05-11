@@ -24,7 +24,6 @@ export function Boat(props){ //props: x, y, direction, length, index
         position: "absolute",
         top: props.top,
         left: props.left,
-        border: "1px solid black",
         zIndex: 1,
         userSelect: "none",
         width: props.direction===true ? props.length*32+"px" : "32px",

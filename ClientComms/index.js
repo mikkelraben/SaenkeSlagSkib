@@ -128,8 +128,11 @@ const handleAttack = (player, data) => {
     if(player1Turn){
         if(player1){
             if(player.id == player1.id){
-                player2.emit("Attack", data);
+                player2.emit("Attack", {index: data.index, hit: true});
+                player1.emit("Hit", {index: data.index, hit: true});
                 console.log("player1 attacked");
+                console.log({index: data.index, hit: false});
+                console.log(data);
                 changeTurn();
             }
         }
@@ -137,8 +140,11 @@ const handleAttack = (player, data) => {
     } else {
         if(player2){
             if(player.id == player2.id){
-                player1.emit("Attack", data);
+                player1.emit("Attack", {index: data.index, hit: false});
+                player2.emit("Hit", {index: data.index, hit: false});
                 console.log("player2 attacked");
+                console.log({index: data.index, hit: false});
+                console.log(data);
                 changeTurn();
             }
         }
