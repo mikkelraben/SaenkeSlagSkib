@@ -37,6 +37,8 @@ function App() { //the main app
       //set the game to not running
       setGameStarted(false);
       setBoats([]);
+      setEnemyX([]);
+      setOwnX([]);
       setIsDonePlacing(false);
     });
 
@@ -61,7 +63,9 @@ function App() { //the main app
   const setCross = (index) => { //set the cross on the square
     socket.emit("Attack", index);
   }
-  
+
+
+
   const DonePlacing = () => { //when the player has placed all boats
     if(boats.length !== 0){   
       setIsDonePlacing(true);
@@ -84,7 +88,7 @@ function App() { //the main app
 
   return ( 
     <div className="App"> 
-      <h1>BattleShip Game 0.1</h1> 
+      <h1>BattleShip Game 0.3</h1> 
       {turnText()}
       {socket && 
         <div style={{width:"100%", height:"100%", margin:"auto"}}>
