@@ -145,6 +145,25 @@ const handleAttack = (player, data) => {
     }
 }
 
+const CheckifBoatOnTile = (player, index) => {
+    if(player === player1){
+        for(var i = 0; i < player1Boats.length; i++){
+            var boat = player1Boats[i];
+            for(var j = 0; j < boat.length; j++){
+                //todo
+            }
+        }
+    } else {
+        for(var i = 0; i < player2Boats.length; i++){
+            var boat = player2Boats[i];
+            for(var j = 0; j < boat.length; j++){
+                //todo
+            }
+        }
+    }
+}
+
+
 io.on("connection", (socket) => {
     socket.on("Init", data => {
         //parse data from json to list of boats

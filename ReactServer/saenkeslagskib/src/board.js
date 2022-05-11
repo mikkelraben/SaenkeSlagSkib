@@ -92,18 +92,18 @@ export default function Board(props) {
                 <div className="board" style={ boardStyle }>
                     {squares.map((square, index) => {
                         return <Square key={index} index={index} handleBoatMove={handleBoatMove} BoardPlacable={props.isDonePlacing||props.isRecieving} state={squares} children={
-                            isBoatOnSquare(index) !== -1 ? <Boat index={isBoatOnSquare(index)} length={props.boats[isBoatOnSquare(index)].length} direction={props.boats[isBoatOnSquare(index)].direction}/> : null }
+                            isBoatOnSquare(index) !== -1 ? <Boat index={isBoatOnSquare(index)} length={props.boats[isBoatOnSquare(index)].length} direction={props.boats[isBoatOnSquare(index)].direction} draggable={!props.isDonePlacing&&!props.isRecieving}/> : null }
                             cross={isCrossOnSquare(index)} setCross={props.setCross}/>
                     })}
                 </div>                
                 {!props.isDonePlacing&&!props.isRecieving&&
                 <div style={{position: "relative", top: 50}}>
-                    <Boat index={-1} length={2} left={50} direction={false}/>
-                    <Boat index={-1} length={3} left={90} direction={false}/>
-                    <Boat index={-1} length={4} left={130} direction={false}/>
-                    <Boat index={-1} length={2} left={10} top={80} direction={true}/>
-                    <Boat index={-1} length={3} left={10} top={120} direction={true}/>
-                    <Boat index={-1} length={4} left={10} top={160} direction={true}/>
+                    <Boat index={-1} length={2} left={50} direction={false} draggable={true}/>
+                    <Boat index={-1} length={3} left={90} direction={false} draggable={true}/>
+                    <Boat index={-1} length={4} left={130} direction={false} draggable={true}/>
+                    <Boat index={-1} length={2} left={10} top={80} direction={true} draggable={true}/>
+                    <Boat index={-1} length={3} left={10} top={120} direction={true} draggable={true}/>
+                    <Boat index={-1} length={4} left={10} top={160} direction={true} draggable={true}/>
                 </div>}
 
 
