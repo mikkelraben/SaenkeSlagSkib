@@ -1,6 +1,6 @@
 import Board from "./board";
 import {io} from "socket.io-client";
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import {BoardSize} from "./Constants";
  
@@ -16,6 +16,19 @@ function App() { //the main app
   useEffect(() => { //when the app loads
     const socket = io("http://localhost:3001");
     setSocket(socket);
+    return () => socket.close(); //when the app unloads
+  }, [setSocket]);
+
+  useEffect(() => { //when the game starts
+    if (!socket) return;
+    socket.on("Attack", data => {
+      setOwnX(data);  
+    });
+
+    socket.on("Hit", data => {
+      setEnemyX(data);
+    });
+
     socket.on("Init", data => {
       //parse data from json to list of boats
       try { //try to parse the data
@@ -42,40 +55,9 @@ function App() { //the main app
       setIsDonePlacing(false);
     });
 
-
-    return () => socket.close(); //when the app unloads
-  }, []);
-
-  useEffect(() => { //when the game starts
-    if (!socket) return;
-    socket.on("Attack", data => {
-      //set the enemy x
-      const crosses = [...ownX];
-      //console.log(crosses);
-      crosses.push(data);
-      //console.log(crosses);
-      setOwnX(crosses);
-      console.log(data);
-    });
-  }, [socket, ownX]);
-
-  useEffect(() => { //when the game starts
-    if (!socket) return;
-    socket.on("Hit", data => {
-      //set the enemy x
-      const crosses = [...enemyX];
-      //console.log(crosses);
-      crosses.push(data);
-      //console.log(crosses);
-      setEnemyX(crosses);
-      console.log(data);
-    });
-  }, [socket,enemyX]);
+  },[socket]);
 
   const setCross = (index) => { //set the cross on the square
-    const crosses = [...enemyX];
-    crosses.push(index);
-    setEnemyX(crosses);
     socket.emit("Attack", {index: index});
   }
 
@@ -116,7 +98,6 @@ function App() { //the main app
       return false; //if the cross is not on the square
     }
   }
-
 
   const DonePlacing = () => { //when the player has placed all boats
     if(boats.length !== 0){   

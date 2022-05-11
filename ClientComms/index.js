@@ -8,6 +8,8 @@ var player1 = null;
 var player2 = null;
 var player1Boats = [];
 var player2Boats = [];
+var player1crosses = [];
+var player2crosses = [];
 var player1Turn = true;
 var gameRunning = false;
 
@@ -129,10 +131,11 @@ const handleAttack = (player, data) => {
         if(player1){
             if(player.id == player1.id){
                 const hit = CheckifBoatOnTile(player1, data.index);
+                player1crosses = [...player1crosses, {index:data.index, hit: hit}];
                 if(player2){
-                    player2.emit("Attack", {index: data.index, hit: hit});
+                    player2.emit("Attack", player1crosses);
                 }
-                player1.emit("Hit", {index: data.index, hit: hit});
+                player1.emit("Hit", player1crosses);
                 console.log("player1 attacked");
                 console.log({index: data.index, hit: hit});
                 console.log(data);
@@ -144,10 +147,11 @@ const handleAttack = (player, data) => {
         if(player2){
             if(player.id == player2.id){
                 const hit = CheckifBoatOnTile(player2, data.index);
+                player2crosses = [...player2crosses, {index:data.index, hit: hit}];
                 if(player1){
-                    player1.emit("Attack", {index: data.index, hit: hit});
+                    player1.emit("Attack", player2crosses);
                 }
-                player2.emit("Hit", {index: data.index, hit: hit});
+                player2.emit("Hit", player2crosses);
                 console.log("player2 attacked");
                 console.log({index: data.index, hit: hit});
                 console.log(data);
