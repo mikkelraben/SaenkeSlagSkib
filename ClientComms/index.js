@@ -103,12 +103,14 @@ const removePlayer = (player) => {
         player1 = null;
         if(player2 !== null){
             player2.emit("GameOver", null);
+            player2 = null;
         }
         checkifReady();
     } else if(player === player2){
         player2 = null;
         if(player1 !== null){
             player1.emit("GameOver", null);
+            player1 = null;
         }
         checkifReady();
     }
@@ -122,16 +124,23 @@ const removePlayer = (player) => {
     }
 }
 
-const handleAttack = (player) => {
+const handleAttack = (player, data) => {
     if(player1Turn){
-        if(player.id == player1.id){
-            console.log("player1 attacked");
-            changeTurn();
+        if(player1){
+            if(player.id == player1.id){
+                player2.emit("Attack", data);
+                console.log("player1 attacked");
+                changeTurn();
+            }
         }
+
     } else {
-        if(player.id == player2.id){
-            console.log("player2 attacked");
-            changeTurn();
+        if(player2){
+            if(player.id == player2.id){
+                player1.emit("Attack", data);
+                console.log("player2 attacked");
+                changeTurn();
+            }
         }
     }
 }
@@ -149,6 +158,8 @@ io.on("connection", (socket) => {
                 console.log(boats);
                 //socket.broadcast.emit("Init", boats);
                 InitPlayers(socket, boats);
+            }else{
+                console.log("game already running");
             }
 
         } catch (error) { //if the data is not valid
@@ -161,15 +172,9 @@ io.on("connection", (socket) => {
         console.log(data);
         console.log("Data parsed");
     });
-    //check if player is ready
-    socket.on("Ready", data => {
-        console.log("Ready");
-        console.log(data);
-        socket.broadcast.emit("Ready", data);
-    });
     //called when player attacks a tile
     socket.on("Attack", data => {
-        handleAttack(socket);
+        handleAttack(socket, data);
     });
     //when player disconnects
     socket.on("disconnect", () => {

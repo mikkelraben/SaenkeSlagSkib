@@ -14,17 +14,6 @@ export function Boat(props){ //props: x, y, direction, length, index
         }),
     }));
 
-    const GenerateBoat = () => { //generate the boat 
-        let boat = "";
-        for (let i = 0; i < props.length; i++) { 
-            boat += "🚤";
-            
-        }
-        return boat;
-    }
-
-
-
     const style = { //style the boat
         cursor: "move",
         display: isDragging&&props.index!==-1 ? "none":"block",

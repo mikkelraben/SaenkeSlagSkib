@@ -44,21 +44,41 @@ function App() { //the main app
     return () => socket.close(); //when the app unloads
   }, []);
 
+  useEffect(() => { //when the game starts
+    if (!socket) return;
+    socket.on("Attack", data => {
+      //set the enemy x
+      const enemyX = data;
+      const crosses = [...ownX];
+      console.log(crosses);
+      crosses.push(enemyX);
+      console.log(crosses);
+      setOwnX(crosses);
+      console.log(data);
+    });
+  }, [ownX, socket]);
+
   const setCross = (index) => { //set the cross on the square
     socket.emit("Attack", index);
   }
   
   const DonePlacing = () => { //when the player has placed all boats
-    setIsDonePlacing(true);
-    socket.emit("Init", JSON.stringify(boats)); //send the boats to the enemy
+    if(boats.length !== 0){   
+      setIsDonePlacing(true);
+      socket.emit("Init", JSON.stringify(boats)); //send the boats to the enemy
+    }
     //console.log(boats);
   }
 
   const turnText = () => { //return the text for the turn
-    if(CurrentTurn){
-      return<h2>Your turn</h2>;
+    if(GameStarted){
+      if(CurrentTurn){
+        return<h2>Your turn</h2>;
+      } else {
+        return <h2>Enemy turn</h2>;
+      }
     } else {
-      return <h2>Enemy turn</h2>;
+      return <h2>Game not started</h2>;
     }
   }
 
@@ -68,12 +88,12 @@ function App() { //the main app
       {turnText()}
       {socket && 
         <div style={{width:"100%", height:"100%", margin:"auto"}}>
-        <div style={{      
-          margin: "auto",
-          display: "grid",
-          width: "542px",
-          gridTemplateColumns: "256px 256px",
-          columnGap: "20px",}}>
+          <div style={{
+            margin: "auto",
+            display: "grid",
+            width: "542px",
+            gridTemplateColumns: "256px 256px",
+            columnGap: "20px",}}>
             <Board isRecieving={false} boats={boats} setBoats={setBoats} setCross={() => {}} isDonePlacing={isDonePlacing} cross={ownX}/>
             <Board isRecieving={true} setCross={setCross} cross={enemyX}/>
             {!GameStarted&&
@@ -81,12 +101,9 @@ function App() { //the main app
               <button onClick={() => {setBoats([]);setIsDonePlacing(false)}}>Reset</button>
               <button onClick={() => DonePlacing()}>Done Placing</button>
             </div>}
+          </div>
         </div>
-      </div>
       } 
-
-
-
 
     </div> 
   );

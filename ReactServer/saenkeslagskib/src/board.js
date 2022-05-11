@@ -22,12 +22,15 @@ export default function Board(props) {
     }
 
     const isCrossOnSquare = (index) => { //check if the cross is on the square
-        for(let i = 0; i < props.cross.length; i++){ //for each cross
-            if(props.cross[i]===index){ //if the cross is on the square
-                return true;
+        if(props.cross){
+            for(let i = 0; i < props.cross.length; i++){ //for each cross
+                if(props.cross[i]===index){ //if the cross is on the square
+                    return true;
+                }
             }
+            return false; //if the cross is not on the square
         }
-        return false; //if the cross is not on the square
+
 
     }
 
