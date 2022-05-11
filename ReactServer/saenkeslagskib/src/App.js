@@ -121,7 +121,7 @@ function App() { //the main app
 
   return ( 
     <div className="App"> 
-      <h1>BattleShip Game 0.5S</h1> 
+      <h1>BattleShip Game 0.5</h1> 
       {turnText()}
       {socket && 
         <div style={{width:"100%", height:"100%", margin:"auto"}}>
