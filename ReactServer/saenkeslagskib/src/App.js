@@ -57,7 +57,7 @@ function App() { //the main app
       setOwnX(crosses);
       console.log(data);
     });
-  }, [ownX, socket]);
+  }, [socket, ownX]);
 
   useEffect(() => { //when the game starts
     if (!socket) return;
@@ -70,7 +70,7 @@ function App() { //the main app
       setEnemyX(crosses);
       console.log(data);
     });
-  }, [enemyX, socket]);
+  }, [socket,enemyX]);
 
   const setCross = (index) => { //set the cross on the square
     const crosses = [...enemyX];
